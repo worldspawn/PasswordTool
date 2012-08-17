@@ -13,7 +13,7 @@
 
     <dt>Salt</dt>
     <dd>@Model.HashSaltAsString (@Model.HashSalt.Length bytes)</dd>
-    <dt>Hash</dt>
+    <dt>SHA512 Hash</dt>
     <dd>@Model.HashAsString (@Model.HashAsString.Length string hash length) (@Model.Hash.Length binary hash bytes)</dd>
     <dd>@string.Join(string.Empty, Model.Hash.Select(b=>b.ToString("x2")).ToArray()) (HEX)</dd>
 </dl>
@@ -21,3 +21,5 @@
 <p>
     Strings are converted to UTF8 byte arrays. String representations of binary data are in Base64.
 </p>
+
+Source: <a target="_blank" href="http://github.com/worldspawn/PasswordTool">http://github.com/worldspawn/PasswordTool</a>
