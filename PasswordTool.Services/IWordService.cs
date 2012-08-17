@@ -40,7 +40,7 @@ namespace PasswordTool.Services
                                           if (response.IsSuccessStatusCode)
                                           {
                                               var contentTask = response.Content.ReadAsStringAsync();
-                                              contentTask.Wait();
+                                              contentTask.Wait(new TimeSpan(0, 0, 30));
                                               var content = contentTask.Result;
                                               return
                                                   Newtonsoft.Json.JsonConvert.DeserializeObject<WordItem[]>(
