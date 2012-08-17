@@ -15,7 +15,7 @@
     <dd>@Model.HashSaltAsString (@Model.HashSalt.Length bytes)</dd>
     <dt>SHA512 Hash</dt>
     <dd>@Model.HashAsString (@Model.HashAsString.Length string hash length) (@Model.Hash.Length binary hash bytes)</dd>
-    <dd>0x@string.Join(string.Empty, Model.Hash.Select(b=>b.ToString("x2")).ToArray()) (HEX)</dd>
+    <dd>@string.Join(string.Empty, Model.Hash.Select(b=>b.ToString("x2")).ToArray()) (HEX)</dd>
 </dl>
 
 <p>
