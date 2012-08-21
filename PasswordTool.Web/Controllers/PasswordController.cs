@@ -20,34 +20,42 @@ namespace PasswordTool.Web.Controllers
         //
         // GET: /Password/
 
+        [HttpGet]
         public ActionResult Index()
         {
-            Password result = new Password();
+            return View();
+            //Password result = new Password();
             
-            var wordTask = _wordService.RandomWords(5, 3);
-            var random = new RNGCryptoServiceProvider();
-            byte[] salt = new byte[4];
-            random.GetBytes(salt);
+            //var wordTask = _wordService.RandomWords(5, 3);
+            //var random = new RNGCryptoServiceProvider();
+            //byte[] salt = new byte[4];
+            //random.GetBytes(salt);
 
-            result.HashSalt = salt;
+            //result.HashSalt = salt;
 
-            using (var sha512 = new SHA512Managed())
-            {
-                wordTask.Wait();
-                var words = wordTask.Result;
-                if (words == null)
-                    return new EmptyResult();
-                result.PasswordParts = words.Select(w => w.Word.ToLower()).ToArray();
-                var password = string.Join(string.Empty, result.PasswordParts);
-                var passwordBytes = System.Text.UTF8Encoding.UTF8.GetBytes(password).ToArray();
-                var hash = sha512.ComputeHash(passwordBytes);
-                salt.CopyTo(hash, hash.Length - salt.Length);
+            //using (var sha512 = new SHA512Managed())
+            //{
+            //    wordTask.Wait();
+            //    var words = wordTask.Result;
+            //    if (words == null)
+            //        return new EmptyResult();
+            //    result.PasswordParts = words.Select(w => w.Word.ToLower()).ToArray();
+            //    var password = string.Join(string.Empty, result.PasswordParts);
+            //    var passwordBytes = System.Text.UTF8Encoding.UTF8.GetBytes(password).ToArray();
+            //    var hash = sha512.ComputeHash(passwordBytes);
+            //    salt.CopyTo(hash, hash.Length - salt.Length);
 
-                result.OriginalPassword = password;
-                result.Hash = hash;
-            }
+            //    result.OriginalPassword = password;
+            //    result.Hash = hash;
+            //}
 
-            return View(result);
+            //return View(result);
+        }
+
+        [HttpGet]
+        public ActionResult GeneratePassword(int minimumWordLength, int wordCommonalityWeighting, int noWords, int saltLength)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,7 +3,35 @@
     ViewBag.Title = "Index";
 }
 
-<h1>Index</h1>
+<h1>Password Tool</h1>
+<hr />
+<form>
+    <fieldset>
+        <legend>Password Properties</legend>
+        <div class="control-group">
+            <label class="control-label">Word Count</label>
+            <div class="control-list">
+                <input type="text" name="wordcount" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Word Complexity</label>
+            <div class="control-list">
+                <input type="text" name="wordcomplexity" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Minimum Word Length</label>
+            <div class="control-list">
+                <input type="text" name="minimumwordlength" />
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit">Create Password</button>
+            <button type="reset">Cancel</button>
+        </div>
+    </fieldset>
+</form>
 
 <dl>
     <dt>Password</dt>

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -11,10 +11,7 @@ using PasswordTool.Services;
 
 namespace PasswordTool.Web
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
@@ -24,17 +21,18 @@ namespace PasswordTool.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("favicon.{*}");
 
             routes.MapRoute(
                 "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Password", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                "{controller}/{action}", // URL with parameters
+                new { controller = "Password", action = "Index" } // Parameter defaults
             );
 
             var builder = new ContainerBuilder();
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterType<WordService>().As<IWordService>();
+            builder.Register(c => new WordService(ConfigurationManager.AppSettings["WordnikAPIKey"], new Uri(ConfigurationManager.AppSettings["WorknikAPIUri"]))).As<IWordService>();
 
             var container = builder.Build();
 
