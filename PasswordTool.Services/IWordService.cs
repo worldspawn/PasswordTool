@@ -12,26 +12,47 @@ namespace PasswordTool.Services
 {
     public interface IWordService
     {
-        Task<IEnumerable<WordItem>> RandomWords(int? minimumWordLength, int? maximumResults);
+        Task<IEnumerable<WordItem>> RandomWords(int? minimumWordLength, int? maximumResults, int? maximumWordLength = 8,
+                                                int? corpusCount = 1000);
+    }
+
+    public interface IHashService
+    {
+        byte[] CreateSalt(int saltLength);
+        byte[] Hash(byte[] data, byte[] salt, int iterations = 1000, int outputLength = 64);
+        bool Verify(byte[] data, byte[] salt, int iterations, byte[] compareTo);
     }
 
     public class WordService : IWordService
     {
-        private readonly Uri ServiceUri = new Uri("https://api.wordnik.com//v4/words.json/");
+        private readonly string _worknikAPIKey;
+        private readonly Uri _serviceUri;
+
+        public WordService(string worknikAPIKey, Uri serviceUri)//https://api.wordnik.com//v4/words.json/
+        {
+            _worknikAPIKey = worknikAPIKey;
+            _serviceUri = serviceUri;
+            if (worknikAPIKey == null) throw new ArgumentNullException("worknikAPIKey");
+            if (serviceUri == null) throw new ArgumentNullException("serviceUri");
+        }
 
         #region IWordService Members
 
-        public Task<IEnumerable<WordItem>> RandomWords(int? minimumWordLength, int? maximumResults)
+        public Task<IEnumerable<WordItem>> RandomWords(int? minimumWordLength, int? maximumResults, int? maximumWordLength = 8, int? corpusCount = 1000)
         {
             var client = new HttpClient();
-            string path = "randomWords?hasDictionaryDef=true&minCorpusCount=1000&maxLength=8";
+            string path = "randomWords?hasDictionaryDef=true";
+            if (corpusCount.HasValue)
+                path = string.Format("{0}&minCorpusCount={1}", path, corpusCount);
+            if (maximumWordLength.HasValue)
+                path = string.Format("{0}&maxLength={1}", path, maximumWordLength);
             if (minimumWordLength.HasValue)
                 path = string.Format("{0}&minLength={1}", path, minimumWordLength);
             if (maximumResults.HasValue)
                 path = string.Format("{0}&limit={1}", path, maximumResults);
 
-            var requestUri = new Uri(ServiceUri, new Uri(path, UriKind.Relative));
-            client.DefaultRequestHeaders.Add("api_key", ConfigurationManager.AppSettings["WordnikAPIKey"]);
+            var requestUri = new Uri(_serviceUri, new Uri(path, UriKind.Relative));
+            client.DefaultRequestHeaders.Add("api_key", _worknikAPIKey);
 
             Task<HttpResponseMessage> task = client.GetAsync(requestUri);
             return Task.Factory.StartNew(() =>
