@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -19,26 +18,9 @@ namespace PasswordTool.Services
 
     public interface IHashService
     {
-        byte[] Hash(byte[] data, out byte[] salt, int saltLength = 16, int iterations = 1000, int outputLength = 64);
-    }
-
-    public class HashService : IHashService
-    {
-        private readonly RNGCryptoServiceProvider _rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-
-        public byte[] Hash(byte[] data, out byte[] salt, int saltLength = 16, int iterations = 1000, int outputLength = 64)
-        {
-            if (saltLength < 8)
-                throw new ArgumentException("saltLength must be at least 8");
-            salt = new byte[saltLength];
-            _rngCryptoServiceProvider.GetBytes(salt);
-
-            var crypto = new Rfc2898DeriveBytes(data, salt, iterations);
-            var result = crypto.GetBytes(outputLength);
-            salt.CopyTo(result, result.Length - salt.Length);
-
-            return result;
-        }
+        byte[] CreateSalt(int saltLength);
+        byte[] Hash(byte[] data, byte[] salt, int iterations = 1000, int outputLength = 64);
+        bool Verify(byte[] data, byte[] salt, int iterations, byte[] compareTo);
     }
 
     public class WordService : IWordService

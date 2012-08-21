@@ -21,7 +21,7 @@ namespace PasswordTool.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.IgnoreRoute("favicon.{*}");
+            routes.IgnoreRoute("favicon.*");
 
             routes.MapRoute(
                 "Default", // Route name
@@ -33,6 +33,7 @@ namespace PasswordTool.Web
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             builder.Register(c => new WordService(ConfigurationManager.AppSettings["WordnikAPIKey"], new Uri(ConfigurationManager.AppSettings["WorknikAPIUri"]))).As<IWordService>();
+            builder.RegisterType<HashService>().As<IHashService>();
 
             var container = builder.Build();
 
