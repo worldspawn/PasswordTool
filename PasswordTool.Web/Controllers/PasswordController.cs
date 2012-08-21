@@ -39,8 +39,9 @@ namespace PasswordTool.Web.Controllers
                     return new EmptyResult();
                 result.PasswordParts = words.Select(w => w.Word.ToLower()).ToArray();
                 var password = string.Join(string.Empty, result.PasswordParts);
-                var passwordBytes = System.Text.UTF8Encoding.UTF8.GetBytes(password).Concat(salt).ToArray();
+                var passwordBytes = System.Text.UTF8Encoding.UTF8.GetBytes(password).ToArray();
                 var hash = sha512.ComputeHash(passwordBytes);
+                salt.CopyTo(hash, hash.Length - salt.Length);
 
                 result.OriginalPassword = password;
                 result.Hash = hash;
