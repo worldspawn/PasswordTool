@@ -8,87 +8,94 @@
 <div class="row" id="passwordarea">
     <div class="span6">
         <form action="@Url.Action("GeneratePassword")" data-bind="event : { submit : createPassword }">
-          <fieldset>
-              <legend>Password Properties</legend>
-              <!-- ko with: passwordViewModel -->
-              <div class="control-group">
-                  <label class="control-label">Source Type</label>
-                  <div class="control-list">
-                      <label class="radio">
-                          <input type="radio" name="sourcetype" data-bind="checked : sourceType" value="auto" />
-                          Automatic
-                      </label>
-                      <label class="radio">
-                          <input type="radio" name="sourcetype" data-bind="checked : sourceType" value="manual" />
-                          Manual
-                      </label>
-                  </div>
-              </div>
-              <!-- ko if: sourceType() === 'auto' -->
-              <div class="control-group">
-                  <label class="control-label">Word Count</label>
-                  <div class="control-list">
-                      <input type="text" name="wordcount" data-bind="value : wordCount" />
-                      <label class="help-block">Maximum word count is 6</label>
-                  </div>
-              </div>
-              <div class="control-group">
-                  <label class="control-label">Word Complexity</label>
-                  <div class="control-list">
-                      <input type="text" name="wordcomplexity" data-bind="value : wordComplexity" />
-                  </div>
-              </div>
-              <div class="control-group">
-                  <label class="control-label">Minimum Word Length</label>
-                  <div class="control-list">
-                      <input type="text" name="minimumwordlength" data-bind="value : minimumWordLength" />
-                  </div>
-              </div>
-              <div class="control-group">
-                  <label class="control-label">Maximum Word Length</label>
-                  <div class="control-list">
-                      <input type="text" name="maximumwordlength" data-bind="value : maximumWordLength" />
-                  </div>
-              </div>
-              <!-- /ko -->
-              <!-- ko if: sourceType() === 'manual' -->
-              <div class="control-group">
-                  <label class="control-label">Passphrase</label>
-                  <div class="control-list">
-                      <input type="text" name="passphrase" data-bind="value : passPhrase" />
-                  </div>
-              </div>
-              <!-- /ko -->
-              <div class="control-group">
-                  <label class="control-label">Hash Length</label>
-                  <div class="control-list">
-                      <input type="text" name="hashlength" data-bind="value : hashLength" />
-                      <label class="help-block">Maximum hash length is 1024 of the hash length</label>
-                  </div>
-              </div>
-              <div class="control-group">
-                  <label class="control-label">Salt Length</label>
-                  <div class="control-list">
-                      <input type="text" name="saltlength" data-bind="value : saltLength" />
-                      <label class="help-block">Minimum salt length is eight</label>
-                      <label class="help-block">Maximum salt length is 50% of the hash length</label>
-                  </div>
-              </div>
-              <div class="control-group">
-                  <label class="control-label">Iterations</label>
-                  <div class="control-list">
-                      <input type="text" name="iterations" data-bind="value : iterations" />
-                      <label class="help-block">Maximum iterations is 10000</label>
-                      <label class="help-block">Minimum iterations is 1000</label>
-                  </div>
-              </div>
-              <!-- /ko -->
-              <div class="form-actions">
-                  <button type="submit">Create Password</button>
-                  <button type="reset">Cancel</button>
-              </div>
-          </fieldset>
-      </form>
+            <fieldset>
+                <legend>Password Properties</legend>
+                <!-- ko with: passwordViewModel -->
+                <div class="control-group">
+                    <label class="control-label">Source Type</label>
+                    <div class="control-list">
+                        <label class="radio">
+                            <input type="radio" name="sourcetype" data-bind="checked : sourceType" value="auto" />
+                            Automatic
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="sourcetype" data-bind="checked : sourceType" value="manual" />
+                            Manual
+                        </label>
+                    </div>
+                </div>
+                <!-- ko if: sourceType() === 'auto' -->
+                <div class="control-group">
+                    <label class="control-label">Word Count</label>
+                    <div class="control-list">
+                        <input type="text" name="wordcount" data-bind="value : wordCount" />
+                        <label class="help-block">Maximum word count is 6</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Word Complexity</label>
+                    <div class="control-list">
+                        <input type="text" name="wordcomplexity" data-bind="value : wordComplexity" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Minimum Word Length</label>
+                    <div class="control-list">
+                        <input type="text" name="minimumwordlength" data-bind="value : minimumWordLength" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Maximum Word Length</label>
+                    <div class="control-list">
+                        <input type="text" name="maximumwordlength" data-bind="value : maximumWordLength" />
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: sourceType() === 'manual' -->
+                <div class="control-group">
+                    <label class="control-label">Passphrase</label>
+                    <div class="control-list">
+                        <input type="text" name="passphrase" data-bind="value : passPhrase" />
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="control-group">
+                    <label class="control-label">Hash Length</label>
+                    <div class="control-list">
+                        <input type="text" name="hashlength" data-bind="value : hashLength" />
+                        <label class="help-block">Maximum hash length is 1024 of the hash length</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Salt Length</label>
+                    <div class="control-list">
+                        <input type="text" name="saltlength" data-bind="value : saltLength" />
+                        <label class="help-block">Minimum salt length is eight</label>
+                        <label class="help-block">Maximum salt length is 50% of the hash length</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Iterations</label>
+                    <div class="control-list">
+                        <input type="text" name="iterations" data-bind="value : iterations" />
+                        <label class="help-block">Maximum iterations is 10000</label>
+                        <label class="help-block">Minimum iterations is 1000</label>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="form-actions">
+                    <button type="submit">Create Password</button>
+                    <button type="reset">Cancel</button>
+                </div>
+            </fieldset>
+        </form>
+        <p>
+            Source: <a target="_blank" href="http://github.com/worldspawn/PasswordTool">http://github.com/worldspawn/PasswordTool</a>
+        </p>
+
+        <p>
+            <a target="_blank" href="http://www.wordnik.com/">Wordnik</a>
+        </p>
     </div>
     <div class="span6" data-bind="with : generatedPassword">
         <h4>Generated Password</h4>
@@ -99,11 +106,11 @@
         </dl>
         <dl>
             <dt>Hash (Base64)</dt>
-            <dd data-bind="html : hashBase64" style="white-space:initial"></dd>
+            <textarea rows="4" class="span5" disabled="disabled" data-bind="value : hashBase64" style="overflow : visible"></textarea>
         </dl>
         <dl>
             <dt>Salt (Base64)</dt>
-            <dd data-bind="html : hashSaltBase64"></dd>
+            <textarea rows="4" class="span5" disabled="disabled" data-bind="value : hashSaltBase64"></textarea>
         </dl>
         <div class="alert alert-info">Generated with <a target="_blank" href="http://msdn.microsoft.com/en-us/library/system.security.cryptography.rfc2898derivebytes(v=vs.100).aspx">System.Security.Cryptography.Rfc2898DeriveBytes</a></div>
         <div data-bind="visible : sourceType() === 'Auto'" class="alert alert-info">If the password is too complex try lowering the word length, number of words or the word complexity</div>
@@ -146,27 +153,3 @@
     ko.applyBindings(new PasswordToolViewModel(null, '@Url.Action("GeneratePassword")'), $('#passwordarea')[0]);
   } (jQuery));
 </script>
-
-@*<dl>
-    <dt>Password</dt>
-    <dd>@Model.OriginalPassword</dd>
-    <dt>Password (broken in to it's words)</dt>
-    <dd>@string.Join("|", Model.PasswordParts)</dd>
-
-    <dt>Salt</dt>
-    <dd>@Model.HashSaltAsString (@Model.HashSalt.Length bytes)</dd>
-    <dt>SHA512 Hash</dt>
-    <dd>@Model.HashAsString (@Model.HashAsString.Length string hash length) (@Model.Hash.Length binary hash bytes)</dd>
-</dl>
-
-<p>
-    Strings are converted to UTF8 byte arrays. String representations of binary data are in Base64.
-</p>*@
-
-<p>
-    Source: <a target="_blank" href="http://github.com/worldspawn/PasswordTool">http://github.com/worldspawn/PasswordTool</a>
-</p>
-
-<p>
-    <a target="_blank" href="http://www.wordnik.com/">Wordnik</a>
-</p>

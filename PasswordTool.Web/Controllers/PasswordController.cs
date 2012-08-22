@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using PasswordTool.Services;
 using PasswordTool.Web.Models;
@@ -74,7 +75,10 @@ namespace PasswordTool.Web.Controllers
 
             return JsonConvert.SerializeObject(password,
                                                new JsonSerializerSettings
-                                                   {ContractResolver = new CamelCasePropertyNamesContractResolver()});
+                                                   {
+                                                       ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                                                       Converters = new List<JsonConverter> { new StringEnumConverter() }
+                                                   });
         }
     }
 }
