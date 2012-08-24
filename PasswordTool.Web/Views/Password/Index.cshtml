@@ -84,8 +84,8 @@
                 </div>
                 <!-- /ko -->
                 <div class="form-actions">
-                    <button type="submit">Create Password</button>
-                    <button type="reset">Cancel</button>
+                    <button type="submit" data-bind="disable : submitting, html : submitText">Create Password</button>
+                    <button type="reset" data-bind="click : reset, disable : submitting">Cancel</button>
                 </div>
             </fieldset>
         </form>
@@ -134,16 +134,25 @@
 
     function PasswordToolViewModel(passwordViewModel, createEndPoint) {
       var self = this;
+      this.submitting = ko.observable(false);
+      this.submitText = ko.computed(function () {
+        return self.submitting() ? 'Please wait' : 'Create Password';
+      });
       this.createEndPoint = createEndPoint;
-      this.passwordViewModel = passwordViewModel || new PasswordViewModel();
+      this.passwordViewModel = ko.observable(passwordViewModel || new PasswordViewModel());
       this.generatedPassword = ko.observable();
+      this.reset = function () {
+        this.passwordViewModel(new passwordViewModel());
+      }
       this.createPassword = function () {
+        this.submitting(true);
         $.ajax(this.createEndPoint, {
           data: $.param(ko.mapping.toJS(this.passwordViewModel)),
           dataType: 'json',
           type: 'GET'
         }).done(function (data) {
           self.generatedPassword(ko.mapping.fromJS(data));
+          self.submitting(false);
         });
 
         return false;
