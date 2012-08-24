@@ -31,7 +31,7 @@ namespace PasswordTool.Web.Controllers
         }
 
         [HttpGet]
-        public string GeneratePassword(PasswordRequest passwordRequest)
+        public JsonResult<Password> GeneratePassword(PasswordRequest passwordRequest)
         {
             if (passwordRequest.WordCount > 6)
                 return null;
@@ -73,12 +73,33 @@ namespace PasswordTool.Web.Controllers
                                    SourceType = passwordRequest.SourceType
                                };
 
-            return JsonConvert.SerializeObject(password,
+            return new JsonResult<Password>(password);
+        }
+    }
+
+    public class JsonResult<TModel> : ActionResult
+    {
+        private readonly TModel _model;
+
+        public JsonResult(TModel model)
+        {
+            _model = model;
+        }
+
+        public TModel Model
+        {
+            get { return _model; }
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var payload = JsonConvert.SerializeObject(_model,
                                                new JsonSerializerSettings
                                                    {
                                                        ContractResolver = new CamelCasePropertyNamesContractResolver(),
                                                        Converters = new List<JsonConverter> { new StringEnumConverter() }
                                                    });
+            context.HttpContext.Response.Write(payload);
         }
     }
 }

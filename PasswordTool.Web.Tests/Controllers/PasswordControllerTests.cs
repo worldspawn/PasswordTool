@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,25 +24,40 @@ namespace PasswordTool.Web.Tests.Controllers
                 );
         }
 
-        //[Fact]
-        //public void IndexCreatesAndReturnsPasswordDetail()
-        //{
-        //    var wordService = Substitute.For<IWordService>();
-        //    var words = new string[] {"first", "second", "third"}.Select(w => new WordItem {Word = w});
-        //    var task = Task.Factory.StartNew(() => words);
-        //    wordService.RandomWords(Arg.Any<int?>(), Arg.Any<int?>()).Returns(task);
+        [Fact]
+        public void IndexReturnsViewResult()
+        {
+            var controller = CreateController();
+            var result = controller.Index();
 
-        //    var controller = CreateController(wordService);
-        //    var result = controller.Index();
+            Assert.NotNull(result);
+            Assert.IsType<ViewResult>(result);
+        }
 
-        //    Assert.NotNull(result);
-        //    Assert.IsType<ViewResult>(result);
+        [Fact]
+        public void GeneratePasswordReturnsPassword()
+        {
+            var hashService = Substitute.For<IHashService>();
+            var hash = new byte[] {0, 0, 0, 0, 0, 0, 0, 0};
+            hashService.Hash(Arg.Any<byte[]>(), Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>())
+                .Returns(ci=>hash);
+            var controller = CreateController(hashService: hashService);
+            var passwordRequest = new PasswordRequest()
+                                      {
+                                          HashLength = 64,
+                                          Iterations = 1000,
+                                          MaximumWordLength = 12,
+                                          MinimumWordLength = 6,
+                                          PassPhrase = "password",
+                                          SaltLength = 16,
+                                          SourceType = SourceType.Manual,
+                                          WordComplexity = 1000,
+                                          WordCount = 0
+                                      };
+            var password = controller.GeneratePassword(passwordRequest);
 
-        //    var viewResult = result as ViewResult;
-        //    Assert.NotNull(viewResult.Model);
-        //    var model = viewResult.Model as Password;
-
-        //    //Assert.Equal(string.Join(string.Empty, words.Select(w=>w.Word).ToArray()), model.OriginalPassword);
-        //}
+            IStructuralEquatable output = password.Model.Hash;
+            Assert.True(output.Equals(hash, StructuralComparisons.StructuralEqualityComparer));
+        }
     }
 }
