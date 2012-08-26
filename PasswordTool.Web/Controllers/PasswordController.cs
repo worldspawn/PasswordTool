@@ -32,6 +32,7 @@ namespace PasswordTool.Web.Controllers
         }
 
         [HttpGet]
+        [OutputCache(NoStore = true)]
         public JsonResult<Password> GeneratePassword(PasswordRequest passwordRequest)
         {
             if (passwordRequest.WordCount > 6)
@@ -73,9 +74,7 @@ namespace PasswordTool.Web.Controllers
                                    PasswordElements = passwordElements,
                                    SourceType = passwordRequest.SourceType
                                };
-
-            Response.Cache.SetNoStore();
-
+            
             return new JsonResult<Password>(password);
         }
     }
