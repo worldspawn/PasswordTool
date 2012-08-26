@@ -116,49 +116,51 @@
         <div data-bind="visible : sourceType() === 'Auto'" class="alert alert-info">If the password is too complex try lowering the word length, number of words or the word complexity</div>
     </div>
 </div>
+@section Script
+{
+    <script type="text/javascript">
+      (function($) {
 
+        function PasswordViewModel() {
+          this.passPhrase = ko.observable('magicshinyunicorndust');
+          this.wordCount = ko.observable(4);
+          this.wordComplexity = ko.observable(2000);
+          this.minimumWordLength = ko.observable(6);
+          this.maximumWordLength = ko.observable(12);
+          this.hashLength = ko.observable(64);
+          this.saltLength = ko.observable(16);
+          this.iterations = ko.observable(2000);
+          this.sourceType = ko.observable('auto');
+        }
 
-<script type="text/javascript">
-  (function ($) {
-    function PasswordViewModel() {
-      this.passPhrase = ko.observable('magicshinyunicorndust');
-      this.wordCount = ko.observable(4);
-      this.wordComplexity = ko.observable(2000);
-      this.minimumWordLength = ko.observable(6);
-      this.maximumWordLength = ko.observable(12);
-      this.hashLength = ko.observable(64);
-      this.saltLength = ko.observable(16);
-      this.iterations = ko.observable(2000);
-      this.sourceType = ko.observable('auto');
-    }
+        function PasswordToolViewModel(passwordViewModel, createEndPoint) {
+          var self = this;
+          this.submitting = ko.observable(false);
+          this.submitText = ko.computed(function() {
+            return self.submitting() ? 'Please wait' : 'Create Password';
+          });
+          this.createEndPoint = createEndPoint;
+          this.passwordViewModel = ko.observable(passwordViewModel || new PasswordViewModel());
+          this.generatedPassword = ko.observable();
+          this.reset = function() {
+            this.passwordViewModel(new passwordViewModel());
+          }
+          this.createPassword = function() {
+            this.submitting(true);
+            $.ajax(this.createEndPoint, {
+              data: $.param(ko.mapping.toJS(this.passwordViewModel)),
+              dataType: 'json',
+              type: 'GET'
+            }).done(function(data) {
+              self.generatedPassword(ko.mapping.fromJS(data));
+              self.submitting(false);
+            });
 
-    function PasswordToolViewModel(passwordViewModel, createEndPoint) {
-      var self = this;
-      this.submitting = ko.observable(false);
-      this.submitText = ko.computed(function () {
-        return self.submitting() ? 'Please wait' : 'Create Password';
-      });
-      this.createEndPoint = createEndPoint;
-      this.passwordViewModel = ko.observable(passwordViewModel || new PasswordViewModel());
-      this.generatedPassword = ko.observable();
-      this.reset = function () {
-        this.passwordViewModel(new passwordViewModel());
-      }
-      this.createPassword = function () {
-        this.submitting(true);
-        $.ajax(this.createEndPoint, {
-          data: $.param(ko.mapping.toJS(this.passwordViewModel)),
-          dataType: 'json',
-          type: 'GET'
-        }).done(function (data) {
-          self.generatedPassword(ko.mapping.fromJS(data));
-          self.submitting(false);
-        });
+            return false;
+          };
+        }
 
-        return false;
-      };
-    }
-
-    ko.applyBindings(new PasswordToolViewModel(null, '@Url.Action("GeneratePassword")'), $('#passwordarea')[0]);
-  } (jQuery));
-</script>
+        ko.applyBindings(new PasswordToolViewModel(null, '@Url.Action("GeneratePassword")'), $('#passwordarea')[0]);
+      }(jQuery));
+    </script>
+}

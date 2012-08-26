@@ -25,6 +25,7 @@ namespace PasswordTool.Web.Controllers
         }
 
         [HttpGet]
+        [OutputCache(Duration=int.MaxValue,VaryByParam = "none")]
         public ActionResult Index()
         {
             return View();
@@ -72,6 +73,8 @@ namespace PasswordTool.Web.Controllers
                                    PasswordElements = passwordElements,
                                    SourceType = passwordRequest.SourceType
                                };
+
+            Response.Cache.SetNoStore();
 
             return new JsonResult<Password>(password);
         }
