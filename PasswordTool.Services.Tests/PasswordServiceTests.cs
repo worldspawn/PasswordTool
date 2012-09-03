@@ -11,6 +11,7 @@ namespace PasswordTool.Services.Tests
         {
             var fallback = new PasswordRequirement(0, PasswordService.AlphaChars);
             var settings = new PasswordSettings();
+            var passwordLength = 20;
             var reqs = new[]
                            {
                                new PasswordRequirement(settings.MinimumNonAlphaChars, settings.MaximumNonAlphaChars, settings.IsUsKeyboard ? PasswordService.UsKeyboardNonAlphas : PasswordService.NonAlphas),
@@ -18,8 +19,11 @@ namespace PasswordTool.Services.Tests
                                new PasswordRequirement(settings.MinimumDigits, settings.MaximumDigits, PasswordService.DigitChars)
                            };
             var passwordService = new PasswordService();
-            byte[] password = passwordService.GeneratePassword(20, fallback, reqs);
+            byte[] password = passwordService.GeneratePassword(passwordLength, fallback, reqs);
             
+            Assert.NotNull(password);
+            Assert.Equal(passwordLength, password.Length);
+
             foreach (PasswordRequirement req in reqs)
             {
                 Assert.Equal(req.Required, req.Used);
