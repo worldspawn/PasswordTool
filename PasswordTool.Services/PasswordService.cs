@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using PasswordTool.Services.Crypto;
@@ -50,7 +49,7 @@ namespace PasswordTool.Services
                     if (result)
                     {
                         var value = req.RandomValue();
-                        Debug.WriteLine("{0} {1} {2}", value, Encoding.UTF8.GetBytes(new[] { value }, 0, 1)[0], Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(new[] { value }, 0, 1)));
+                        
                         password[index] = Encoding.UTF8.GetBytes(new[] { value }, 0, 1)[0];
                         req.Used++;
                         fallback = false;

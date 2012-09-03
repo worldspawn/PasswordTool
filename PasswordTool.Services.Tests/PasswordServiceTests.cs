@@ -19,20 +19,9 @@ namespace PasswordTool.Services.Tests
                            };
             var passwordService = new PasswordService();
             byte[] password = passwordService.GeneratePassword(20, fallback, reqs);
-
-            Debug.WriteLine(Encoding.UTF8.GetString(password));
-
-            foreach (var @byte in password)
-            {
-                Debug.Write(@byte);
-                Debug.Write(" ");
-            }
             
-            Debug.WriteLine("");
-
             foreach (PasswordRequirement req in reqs)
             {
-                Debug.WriteLine("{0} - {1}", req.Required, req.Used);
                 Assert.Equal(req.Required, req.Used);
             }
         }
