@@ -33,7 +33,7 @@ namespace PasswordTool.Web
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             builder.Register(c => new WordService(ConfigurationManager.AppSettings["WordnikAPIKey"], new Uri(ConfigurationManager.AppSettings["WorknikAPIUri"]))).As<IWordService>();
-            builder.RegisterType<HashService>().As<IHashService>();
+            builder.RegisterType<Rfc2898HashService>().As<IHashService>();
 
             var container = builder.Build();
 

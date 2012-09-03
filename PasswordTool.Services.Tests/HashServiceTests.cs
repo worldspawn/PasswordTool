@@ -8,7 +8,7 @@ namespace PasswordTool.Services.Tests
         [Fact]
         public void HashServiceProducesValidSalt()
         {
-            var hashService = new HashService();
+            var hashService = new Rfc2898HashService();
             var salt = hashService.CreateSalt(16);
 
             Assert.NotNull(salt);
@@ -19,7 +19,7 @@ namespace PasswordTool.Services.Tests
         public void CanHashAndVerify()
         {
             const string testphrase = "Dr. DoLittle"; 
-            var hashService = new HashService();
+            var hashService = new Rfc2898HashService();
             var salt = hashService.CreateSalt(16);
             var testphrasebytes = Encoding.UTF8.GetBytes(testphrase);
             var hash = hashService.Hash(testphrasebytes, salt, 1000, 64);
