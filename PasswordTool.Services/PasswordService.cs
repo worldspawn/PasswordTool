@@ -66,15 +66,14 @@ namespace PasswordTool.Services
 
         private bool Rand(int used, int required, int chancesLeft)
         {
-            const decimal threshold = (300 * 0.5m);
             decimal stillNeed = required - used;
+
             if (stillNeed <= 0)
                 return false;
             if (stillNeed >= chancesLeft)
                 return true;
 
-            var result = _cryptoRandom.Next(0, 300) > threshold;
-            return result;
+            return _cryptoRandom.NextBoolean();
         }
     }
 }
