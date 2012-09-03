@@ -1,3 +1,4 @@
+//Source: http://msdn.microsoft.com/en-us/magazine/cc163367.aspx
 using System;
 using System.Security.Cryptography;
 
