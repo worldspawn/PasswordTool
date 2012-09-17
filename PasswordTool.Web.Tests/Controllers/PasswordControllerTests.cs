@@ -39,7 +39,8 @@ namespace PasswordTool.Web.Tests.Controllers
         {
             var hashService = Substitute.For<IHashService>();
             var hash = new byte[] {0, 0, 0, 0, 0, 0, 0, 0};
-            hashService.Hash(Arg.Any<byte[]>(), Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>())
+            var expectedHash = new byte[] { 0, 0, 0, 0 };
+            hashService.Hash(Arg.Any<byte[]>(), Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>())
                 .Returns(ci=>hash);
             var controller = CreateController(hashService: hashService);
             var passwordRequest = new PasswordRequest()
@@ -57,7 +58,7 @@ namespace PasswordTool.Web.Tests.Controllers
             var password = controller.GeneratePassword(passwordRequest);
 
             IStructuralEquatable output = password.Model.Hash;
-            Assert.True(output.Equals(hash, StructuralComparisons.StructuralEqualityComparer));
+            Assert.True(output.Equals(expectedHash, StructuralComparisons.StructuralEqualityComparer));
         }
     }
 }
