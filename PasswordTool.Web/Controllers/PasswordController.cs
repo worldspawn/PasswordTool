@@ -66,10 +66,11 @@ namespace PasswordTool.Web.Controllers
                 passwordElements = new[] {passwordRequest.PassPhrase};
             }
 
-            var hash = _hashService.Hash(passPhraseBytes, salt, passwordRequest.Iterations, passwordRequest.HashLength);
+            var hash = _hashService.Hash(passPhraseBytes, salt, passwordRequest.Iterations, passwordRequest.HashLength + 4);//pad length as we will remove the version number
+
             var password = new Password
                                {
-                                   Hash = hash,
+                                   Hash = hash.Skip(4).ToArray(),//crop the version number from the start
                                    HashSalt = salt,
                                    PasswordElements = passwordElements,
                                    SourceType = passwordRequest.SourceType

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace PasswordTool.Services
@@ -16,7 +17,7 @@ namespace PasswordTool.Services
             return salt;
         }
 
-        public abstract byte[] Hash(byte[] data, byte[] salt, int iterations = 1000, int outputLength = 64);
-        public abstract bool Verify(byte[] data, byte[] salt, int iterations, byte[] compareTo);
+        public abstract byte[] Hash(byte[] data, byte[] salt, int version, int iterations = 1000, int outputLength = 64);
+        public abstract bool Verify(byte[] data, byte[] salt, IDictionary<int, HashParameters> hashParameters, byte[] compareTo);
     }
 }
